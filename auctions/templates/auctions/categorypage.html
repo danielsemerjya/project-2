@@ -1,20 +1,20 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h1 align='center'>Active Listings</h2>
+    <h1 align='center'>Active Listings in {{category}}</h2>
 
 <div>
-    {% for auction in listing %}
+    {% for auction in listings %}
         {% if auction.status %}
             <div class="container">        
                 <div class="row">
                     <div class="col-xs-6">
-                        <a href="{{ auction.id }}/"> <img src="{{auction.img_url}}" alt="no image" style="width:250px;height:250px;"> </h2> </a>
+                        <a href="/{{ auction.id }}"> <img src="{{auction.img_url}}" alt="no image" style="width:250px;height:250px;"> </h2> </a>
                         
                     </div>
 
                     <div class="col">
-                        <a href="{{ auction.id }}/"> <h2> {{ auction.title }} </h2> </a>
+                        <a href="/{{ auction.id }}/"> <h2> {{ auction.title }} </h2> </a>
                         <h4> {{auction.description}}</h4>
                         {%for b in bid %}
                             {% if b.listing_id == auction %}
@@ -26,7 +26,7 @@
 
                 </div>
                 <br>
-            </div>    
+            </div>   
         {% endif %} 
     {% endfor %}
     

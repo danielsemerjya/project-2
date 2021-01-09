@@ -1,0 +1,115 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if user == bid.user_id and listing.status == False %}
+    <h1> Auction closed. You have won the auction</h1>
+    {% endif %}
+    <h1 align='center'>{{listing}}</h1>
+
+    {% if user.is_authenticated and not on_watchlist %}
+
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                        <form action="{% url 'add_watchlist' %}" method="post">
+                        {% csrf_token %}
+                    <button 
+                        type="submit" 
+                        class="btn btn-secondary" 
+                        value="{{ listing.id }}" 
+                        name="listing">add to watchlist
+                    </button>
+                </div>
+            </div>
+        </div>
+    {% endif %} 
+
+    {% if user.is_authenticated and  on_watchlist %}
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                        <form action="{% url 'remove_watchlist' %}" method="post">
+                        {% csrf_token %}
+                        <button 
+                            type="submit" 
+                            class="btn btn-secondary" 
+                            value="{{ listing.id }}" 
+                            name="listing">remove from watchlist
+                        </button>
+                </div>
+            </div>
+        </div>
+    {% endif %} 
+
+        </form>
+        <div class="container">
+            <img align="center" src="{{listing.img_url}}" alt="Italian Trulli">
+        </div>
+        <div>
+        <h3 align="center"> {{listing.description}} </h3>
+
+        <h2 align="center"> ${{bid.price}} </h2>
+        {% if user == bid.user_id %}
+        <h3 align="center"> Your bid is highest one </h3>
+        {% endif %}
+        </div>
+    {% if user.is_authenticated and user != listing.owner and listing.status == True %}
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <form action="{% url 'bid_up' %}" method="POST">
+                    {% csrf_token %}
+                    {{form}}
+                    <input type="hidden" name="listing_id" value="{{ listing_id }}">
+                    <input class="btn btn-primary" type="submit" value="Bid up">        
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %} 
+
+    {% if user == listing.owner %}
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <form action="{% url 'listing_operations' %}" method="post">
+                    {% csrf_token %}
+                    <button 
+                        type="submit" 
+                        class="btn btn-secondary" 
+                        value="{{ listing.id }}" 
+                        name="listing">close auction
+                    </button>
+                </div>
+            </div>
+        </div>
+    {% endif %} 
+
+    <p>
+    <hr>
+    <h2 align="center"> Comments section: </h2>
+
+    {% if user.is_authenticated %}
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <form action="{% url 'listing_operations' %}" method="POST">
+                    {% csrf_token %}
+                    {{new_comment}}
+                    <input type="hidden" name="listing_id" value="{{ listing.id }}">
+                    <input class="btn btn-primary" type="submit" value="Add new comment">        
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+    {% for comment in comments %}
+    <div>
+        <h4 align="center">{{comment.user_id.username}}: {{comment.text}}</h4>
+    </div>
+    {% endfor %}
+
+    
+{% endblock %}

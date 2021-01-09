@@ -1,11 +1,10 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h1 align='center'>Active Listings</h2>
+    <h1 align='center'>Your Watchpage</h1>
 
 <div>
-    {% for auction in listing %}
-        {% if auction.status %}
+    {% for auction in listings %}
             <div class="container">        
                 <div class="row">
                     <div class="col-xs-6">
@@ -27,7 +26,6 @@
                 </div>
                 <br>
             </div>    
-        {% endif %} 
     {% endfor %}
     
     

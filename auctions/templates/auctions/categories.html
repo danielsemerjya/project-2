@@ -1,0 +1,17 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h1 align='center'>Active Categories</h2>
+
+<div>
+
+    {% for category in categories %}
+
+        <a align="center" href="{{ category.category }}/"> <h2> {{ category.category}} </h2> </a>
+
+    {% endfor %}
+
+    
+    
+</div>
+{% endblock %}
