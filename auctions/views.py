@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from .form import create_form, bid_form, new_comment
 from .models import User, Listing, Bid, Watch, Comment
@@ -204,6 +204,9 @@ def create(request):
             img = face_blurr(img.img)
             # add bid
             add_bid = Bid.objects.create(listing_id =add_listing ,user_id=user ,price=start_bid)
+
+            # out of a view context
+            return redirect('/'+ str(add_listing.id))
             
     return render(request, "auctions/create.html", {
         "form": create_form()

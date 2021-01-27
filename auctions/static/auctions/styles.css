@@ -1,3 +1,14 @@
 body {
     padding: 10px;
 }
+
+.center {
+    display: block;
+    margin-left: center;
+    margin-right: center;
+    width: 50%;
+  }
+
+.aligncenter {
+    text-align: center;
+}

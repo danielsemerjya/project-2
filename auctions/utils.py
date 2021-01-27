@@ -54,7 +54,7 @@ def face_blurr(input):
     directory = r'media/images'
 
     img = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
-    #img = imutils.resize(img, width=400)
+    img = imutils.resize(img, width=600)
     #H,W_ = img.shape
 
     face_coord = face_cascade.detectMultiScale(img,1.2,10,minSize=(50,50))
