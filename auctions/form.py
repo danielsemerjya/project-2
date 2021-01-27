@@ -11,13 +11,13 @@ class create_form(forms.Form):
     title = forms.CharField(label="New listing title")
     text = forms.CharField(label="Text-based description", widget=forms.Textarea)
     start_bid = forms.FloatField(label="Starting bid")
-    url = forms.CharField(label="Link for item photo (size 600x600px)")
+    img = forms.forms.FileField(label="Image of your item")
     category = forms.TypedChoiceField(choices = DEMO_CHOICES, coerce=str, empty_value="Lifestyle")
+
 
     title.widget.attrs.update({'class': 'form-control'})
     text.widget.attrs.update({'class': 'form-control'})
     start_bid.widget.attrs.update({'class': 'form-control'})
-    url.widget.attrs.update({'class': 'form-control'})
     category.widget.attrs.update({'class': 'form-control'})
 
 

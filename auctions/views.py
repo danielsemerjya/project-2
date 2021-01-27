@@ -6,10 +6,10 @@ from django.urls import reverse
 from .form import create_form, bid_form, new_comment
 from .models import User, Listing, Bid, Watch, Comment
 from django.db.models import Max, F
-from .utils import highest_bid
+from .utils import highest_bid, face_blurr
+
 
 def listing_operations(request):
-
     if request.method == "POST":
         if 'listing' in request.POST:
             # close listing
@@ -43,6 +43,7 @@ def listing_operations(request):
     return HttpResponse("Problem")
 
 def bid_up(request):
+    # function for bid up listings
     form = bid_form()
     if request.method=="POST":
         username = request.user.username
@@ -102,6 +103,7 @@ def listing(request, listing_id):
     })
 
 def categorypage(request, category):
+    # display categories
     listings = Listing.objects.filter(category=category)
     print(category)
     b = Bid.objects.annotate(
@@ -117,6 +119,7 @@ def categorypage(request, category):
     pass
 
 def add_watchlist(request):
+    # button "add listing to watchlist"
     if request.method == "POST":
         listing_id = request.POST["listing"]
         username = request.user.username
@@ -132,6 +135,7 @@ def add_watchlist(request):
         return HttpResponse(html)
 
 def remove_watchlist(request):
+    # button "remove listing to watchlist"
     if request.method == "POST":
         listing_id = request.POST["listing"]
         username = request.user.username
@@ -183,20 +187,21 @@ def watchpage(request):
 
 def create(request):
     if request.method == "POST":
-        form = create_form(request.POST)
+        form = create_form(request.POST, request.FILES)
         if form.is_valid():
             # Get date from form
             title = form.cleaned_data['title']
             text = form.cleaned_data['text']
             start_bid = form.cleaned_data['start_bid']
-            url = form.cleaned_data['url']
             category = form.cleaned_data['category']
-            # finde user
+            img = request.FILES['img']
+            # find   user
             username = request.user.username
             user=User.objects.get(username=username)
-
             # Add new listing to db
-            add_listing = Listing.objects.create(title=title, description=text, img_url=url, category=category, owner=user)
+            add_listing = Listing.objects.create(title=title, description=text, category=category, owner=user, img=img)
+            img = Listing.objects.get(id=add_listing.id)
+            img = face_blurr(img.img)
             # add bid
             add_bid = Bid.objects.create(listing_id =add_listing ,user_id=user ,price=start_bid)
             

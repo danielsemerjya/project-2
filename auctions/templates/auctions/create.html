@@ -3,7 +3,7 @@
 {% block body %}
     <h1 align='center'>Add new listing to our page! Dear {{user.username }}</h1>
 
-    <form action="{% url 'create' %}" method="post">
+    <form action="{% url 'create' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <input class="btn btn-primary" type="submit">

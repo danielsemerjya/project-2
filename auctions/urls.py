@@ -2,6 +2,9 @@ from django.urls import path
 
 from . import views
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path("", views.index, name="index"),
     path("login", views.login_view, name="login"),
@@ -16,4 +19,4 @@ urlpatterns = [
     path("categories", views.categories, name="categories"),
     path("watchpage", views.watchpage, name="watchpage"),
     path("listing_operations", views.listing_operations, name="listing_operations"),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

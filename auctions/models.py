@@ -10,7 +10,7 @@ def __str__(self):
 class Listing(models.Model):
     title = models.CharField(max_length=64)
     description = models.CharField(max_length=240)
-    img_url = models.CharField(max_length=240)
+    img = models.ImageField(null=True, blank=True, upload_to="images/")
     category = models.CharField(max_length=64)
     status = models.BooleanField(default=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
