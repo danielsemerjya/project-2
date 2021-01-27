@@ -38,7 +38,7 @@ def listing_operations(request):
             print(type(listing))
             Comment.objects.create(listing_id=listing, user_id=user,text=text)
             html = "<a href= %s > <h2>Well done, click to back </h2> </a>" % listing_id
-            return HttpResponse(html)
+            return redirect('/'+ str(listing.id))
 
     return HttpResponse("Problem")
 
@@ -56,7 +56,7 @@ def bid_up(request):
         if float(bid_h.price) < float(bid_up):
             Bid.objects.create(listing_id=listing, user_id=user, price=bid_up)
             html = "<a href= %s > <h2>Well done, click to back </h2> </a>" % listing_id
-            return HttpResponse(html)
+            return redirect('/'+ str(listing.id))
         else:
             html = "<a href= %s > <h2>Your bid it's too small, click to back </h2> </a>" % listing_id
             return HttpResponse(html)
@@ -132,7 +132,8 @@ def add_watchlist(request):
         if not check_listing:
             new = Watch.objects.create(user=user, auction=listing)
         html = "<a href= %s > <h2>Well done, click to back </h2> </a>" % listing_id
-        return HttpResponse(html)
+        return redirect('/'+ str(listing.id))
+
 
 def remove_watchlist(request):
     # button "remove listing to watchlist"
@@ -148,7 +149,7 @@ def remove_watchlist(request):
         if check_listing:
             Watch.objects.get(user=user, auction=listing).delete()
         html = "<a href= %s > <h2>Well done, click to back </h2> </a>" % listing_id
-        return HttpResponse(html)
+        return redirect('/'+ str(listing.id))
 
 def categories(request):
     categories = Listing.objects.values('category').distinct()
